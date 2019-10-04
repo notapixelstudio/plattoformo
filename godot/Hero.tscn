@@ -4,12 +4,14 @@
 [ext_resource path="res://assets/hero.png" type="Texture" id=2]
 [ext_resource path="res://StateMachine.tscn" type="PackedScene" id=3]
 
-[sub_resource type="PhysicsMaterial" id=3]
+[sub_resource type="PhysicsMaterial" id=1]
+friction = 0.1
+rough = true
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 8, 8 )
 
-[sub_resource type="GDScript" id=2]
+[sub_resource type="GDScript" id=3]
 script/source = "extends PixelPerfect
 
 
@@ -17,20 +19,24 @@ script/source = "extends PixelPerfect
 
 [node name="Hero" type="RigidBody2D"]
 mode = 2
-physics_material_override = SubResource( 3 )
+physics_material_override = SubResource( 1 )
 contacts_reported = 2
 contact_monitor = true
-linear_damp = 10.0
+linear_damp = 3.0
 script = ExtResource( 1 )
+default_gravity_scale = 3.0
+fall_gravity_scale = 10.0
+jump_impulse = 280.0
+walk_speed = 14.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 8, 8 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 centered = false
-script = SubResource( 2 )
+script = SubResource( 3 )
 
 [node name="EnvironmentSM" parent="." instance=ExtResource( 3 )]
 

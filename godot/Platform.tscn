@@ -3,7 +3,7 @@
 [ext_resource path="res://Platform.gd" type="Script" id=1]
 [ext_resource path="res://assets/block.png" type="Texture" id=2]
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 64, 16 )
 
 [node name="Platform" type="StaticBody2D"]
@@ -20,4 +20,4 @@ patch_margin_bottom = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 64, 16 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
