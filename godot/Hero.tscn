@@ -1,45 +1,69 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Hero.gd" type="Script" id=1]
-[ext_resource path="res://assets/hero.png" type="Texture" id=2]
-[ext_resource path="res://StateMachine.tscn" type="PackedScene" id=3]
+[ext_resource path="res://StateMachine.tscn" type="PackedScene" id=2]
+[ext_resource path="res://PixelPerfect.gd" type="Script" id=3]
+[ext_resource path="res://assets/hero.png" type="Texture" id=4]
 
 [sub_resource type="PhysicsMaterial" id=1]
-friction = 0.1
+friction = 1.5
 rough = true
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 8, 8 )
 
-[sub_resource type="GDScript" id=3]
-script/source = "extends PixelPerfect
-
-
-"
+[sub_resource type="Animation" id=3]
+resource_name = "Land"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.25, 0.75 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -2, 4 ), Vector2( 0, 0 ) ]
+}
 
 [node name="Hero" type="RigidBody2D"]
 mode = 2
 physics_material_override = SubResource( 1 )
 contacts_reported = 2
 contact_monitor = true
-linear_damp = 3.0
 script = ExtResource( 1 )
-default_gravity_scale = 3.0
-fall_gravity_scale = 10.0
-jump_impulse = 280.0
-walk_speed = 14.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 8, 8 )
 shape = SubResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 2 )
+[node name="EnvironmentSM" parent="." instance=ExtResource( 2 )]
+
+[node name="ActionSM" parent="." instance=ExtResource( 2 )]
+
+[node name="Graphics" type="Node2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="Graphics"]
+texture = ExtResource( 4 )
 centered = false
-script = SubResource( 3 )
 
-[node name="EnvironmentSM" parent="." instance=ExtResource( 3 )]
-
-[node name="ActionSM" parent="." instance=ExtResource( 3 )]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Graphics/Sprite"]
+playback_speed = 2.0
+anims/Land = SubResource( 3 )
 [connection signal="state_change" from="EnvironmentSM" to="." method="_on_env_change"]
 [connection signal="state_change" from="ActionSM" to="." method="_on_action_change"]

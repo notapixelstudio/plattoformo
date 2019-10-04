@@ -3,10 +3,13 @@ extends RigidBody2D
 onready var env = $EnvironmentSM
 onready var action = $ActionSM
 
-export var default_gravity_scale : float = 6 
-export var fall_gravity_scale : float = 20
-export var jump_impulse : float = 800
-export var walk_speed : float = 40
+export var default_gravity_scale : float = 4
+export var fall_gravity_scale : float = 12
+export var jump_impulse : float = 210
+export var walk_speed : float = 15
+export var air_walk_speed : float = 4
+
+var speed
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -35,17 +38,26 @@ func _physics_process(delta):
 	elif action.in_state('jump'):
 		if Input.is_action_just_released("ui_accept") or linear_velocity.y > 0:
 			action.set_state('fall')
-	elif env.in_state('floor'):
-		action.set_state('ready')
-		
+	elif action.in_state('fall'):
+		if env.in_state('floor'):
+			action.set_state('ready')
+			
 	var dir_x = int(Input.is_action_pressed('ui_right'))-int(Input.is_action_pressed('ui_left'))
-	apply_central_impulse(walk_speed*Vector2(dir_x,0))
+	apply_central_impulse(speed*Vector2(dir_x,0))
 	if dir_x != 0:
-		$Sprite.flip_h = dir_x < 0
+		$Graphics/Sprite.flip_h = dir_x < 0
 	
 func _on_env_change(old_state, new_state):
 	print('Environment: ', new_state)
 	
+	if new_state == 'air':
+		speed = air_walk_speed
+	elif new_state == 'floor':
+		speed = walk_speed
+		
+	if old_state == 'air' and new_state == 'floor':
+		$Graphics/Sprite/AnimationPlayer.play('Land')
+		
 func _on_action_change(old_state, new_state):
 	print('Action: ', new_state)
 	
