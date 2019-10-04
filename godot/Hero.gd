@@ -45,8 +45,9 @@ func _integrate_forces(state):
 			action.set_state('ready')
 			
 	var dir_x = int(Input.is_action_pressed('ui_right'))-int(Input.is_action_pressed('ui_left'))
-	state.linear_velocity.x = dir_x*speed 
-	# apply_central_impulse(speed*Vector2(dir_x,0))
+	apply_central_impulse(speed*Vector2(dir_x,0))
+	state.linear_velocity.x = clamp(state.linear_velocity.x,-speed, speed)
+
 	if dir_x != 0:
 		$Graphics/Sprite.flip_h = dir_x < 0
 	

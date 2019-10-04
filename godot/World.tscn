@@ -13,6 +13,8 @@ script = ExtResource( 1 )
 [node name="Hero" parent="." instance=ExtResource( 2 )]
 position = Vector2( -96, -100 )
 fall_gravity_scale = 8.0
+walk_speed = 200.0
+air_walk_speed = 160.0
 
 [node name="Camera2D" type="Camera2D" parent="Hero"]
 current = true
