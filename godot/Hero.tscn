@@ -6,7 +6,6 @@
 [ext_resource path="res://assets/hero.png" type="Texture" id=4]
 
 [sub_resource type="PhysicsMaterial" id=1]
-friction = 1.5
 rough = true
 
 [sub_resource type="RectangleShape2D" id=2]
@@ -65,5 +64,6 @@ centered = false
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Graphics/Sprite"]
 playback_speed = 2.0
 anims/Land = SubResource( 3 )
+
 [connection signal="state_change" from="EnvironmentSM" to="." method="_on_env_change"]
 [connection signal="state_change" from="ActionSM" to="." method="_on_action_change"]
